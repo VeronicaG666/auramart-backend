@@ -20,26 +20,26 @@ const register = async (req, res, next) => {
 
   try {
     if (!username || !email || !password) {
-      console.warn("❌ Missing fields:", { username, email, password: !!password });
+      console.warn(" Missing fields:", { username, email, password: !!password });
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    console.log("🔍 Checking if username or email exists...");
+    console.log(" Checking if username or email exists...");
     const existing = await pool.query(
       "SELECT * FROM users WHERE username=$1 OR email=$2",
       [username, email]
     );
-    console.log("✅ Existing user check result:", existing.rows);
+    console.log(" Existing user check result:", existing.rows);
 
     if (existing.rows.length > 0) {
-      console.warn("❌ Duplicate found:", existing.rows[0]);
+      console.warn(" Duplicate found:", existing.rows[0]);
       return res.status(400).json({ message: "Username or Email already exists" });
     }
 
-    console.log("🔐 Hashing password...");
+    console.log(" Hashing password...");
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    console.log("📝 Inserting user into DB...");
+    console.log(" Inserting user into DB...");
     const result = await pool.query(
       `INSERT INTO users (username, email, password, is_admin)
        VALUES ($1, $2, $3, $4)
@@ -47,12 +47,12 @@ const register = async (req, res, next) => {
       [username, email, hashedPassword, false]
     );
 
-    console.log("✅ Insert result:", result.rows);
+    console.log(" Insert result:", result.rows);
 
     const user = result.rows[0];
     const token = generateToken(user);
 
-    console.log("🎉 Registration successful for user:", user.username);
+    console.log(" Registration successful for user:", user.username);
 
     res.status(201).json({
       message: "User registered successfully",
@@ -60,7 +60,7 @@ const register = async (req, res, next) => {
       token,
     });
   } catch (error) {
-    console.error("❌ Registration error details:", error);
+    console.error(" Registration error details:", error);
     res.status(500).json({ message: "Registration failed", error: error.message });
   }
 };

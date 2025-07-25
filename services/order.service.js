@@ -42,7 +42,7 @@ class OrderService {
 
       return order;
     } catch (error) {
-      console.error("❌ Order creation error:", error.message);
+      console.error(" Order creation error:", error.message);
       throw new ErrorHandler(500, "Failed to create order");
     }
   };

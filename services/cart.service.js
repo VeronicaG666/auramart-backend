@@ -18,7 +18,7 @@ class CartService {
   }
 
   async addItem(userId, productId, quantity) {
-    console.log("🔥 Backend received:", { userId, productId, quantity });
+    console.log(" Backend received:", { userId, productId, quantity });
 
     quantity = parseInt(quantity, 10);
 

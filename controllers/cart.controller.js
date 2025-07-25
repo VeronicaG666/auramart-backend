@@ -7,8 +7,8 @@ const getCart = async (req, res) => {
 };
 
 const addItem = async (req, res) => {
-  console.log("🔥 Incoming add-to-cart body:", req.body);
-  console.log("🔥 Auth user:", req.user);
+  console.log(" Incoming add-to-cart body:", req.body);
+  console.log(" Auth user:", req.user);
 
   const { product_id, quantity } = req.body;
   const userId = req.user.id;

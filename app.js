@@ -39,7 +39,7 @@ app.use(compression());
 app.use(helmet());
 app.use(cookieParser());
 
-app.get("/", (req, res) => res.send("<h1 style='text-align: center'>✅ API is running</h1>"));
+app.get("/", (req, res) => res.send("<h1 style='text-align: center'> API is running</h1>"));
 
 app.use("/api/auth", authRoutes);
 app.use("/api", routes);
