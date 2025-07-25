@@ -1,5 +1,5 @@
 const express = require("express");
-require("express-async-errors"); 
+require("express-async-errors");
 const cors = require("cors");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -19,18 +19,25 @@ const app = express();
 app.set("trust proxy", 1);
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL || "http://localhost:3000",
-  "https://your-vercel-app.vercel.app" // Replace later with actual Vercel URL
+  "http://localhost:3000",
+  "https://auramart-frontend.vercel.app"
 ];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization", "auth-token"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
+
 
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ extended: true }));
