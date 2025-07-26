@@ -34,21 +34,17 @@ const createProduct = async (req, res, next) => {
 
 const getProduct = async (req, res, next) => {
   try {
-    console.log("✅ Fetching product with ID:", req.params.id);
-
-    const product = await productService.getProductById(req.params.id);
-
-    console.log("✅ Query Result:", product);
+    const { id } = req.params;
+    const product = await productService.getProductById(id);
 
     if (!product) {
-      console.warn("⚠️ No product found for ID:", req.params.id);
       return res.status(404).json({ message: "Product not found" });
     }
 
     res.status(200).json(product);
   } catch (error) {
     console.error("❌ Error in getProduct:", error.message);
-    return res.status(500).json({ message: "Internal server error", error: error.message });
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
 

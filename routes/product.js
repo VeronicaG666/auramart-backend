@@ -24,7 +24,8 @@ router.route("/")
 router.get("/categories/list", getCategories);
 
 // ✅ Get Product by ID (For guest cart & direct lookup)
-router.get("/id/:id", getProduct);  // <-- NEW
+// ✅ Add this ABOVE slug route
+router.get("/id/:id", getProduct);
 
 // ✅ Slug-based routes
 router.route("/:slug")

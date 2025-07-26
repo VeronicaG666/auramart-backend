@@ -1,3 +1,4 @@
+const pool = require("../config"); // Make sure pool is imported
 const {
   getAllProductsDb,
   createProductDb,
@@ -42,15 +43,18 @@ class ProductService {
     }
   };
 
-
+  // ✅ Fix: Get product by ID
   getProductById = async (id) => {
-    console.log("✅ Running query for product_id:", id);
-    const result = await pool.query("SELECT * FROM products WHERE product_id = $1", [id]);
-    console.log("✅ DB Response:", result.rows);
-    return result.rows[0];
+    try {
+      console.log("✅ Fetching product by ID:", id);
+      const query = "SELECT * FROM products WHERE product_id = $1"; // Use correct column
+      const result = await pool.query(query, [id]);
+      if (!result.rows.length) throw new ErrorHandler(404, "Product not found");
+      return result.rows[0];
+    } catch (error) {
+      throw new ErrorHandler(error.statusCode || 500, error.message || "Error fetching product");
+    }
   };
-
-
 
   getProductBySlug = async (slug) => {
     try {
@@ -62,7 +66,6 @@ class ProductService {
     }
   };
 
-
   getProductByName = async (name) => {
     try {
       const product = await getProductByNameDb(name);
@@ -73,7 +76,6 @@ class ProductService {
     }
   };
 
-
   updateProduct = async (data) => {
     try {
       const product = await getProductDb(data.id);
@@ -83,7 +85,6 @@ class ProductService {
       throw new ErrorHandler(error.statusCode || 500, error.message || "Error updating product");
     }
   };
-
 
   removeProduct = async (id) => {
     try {
