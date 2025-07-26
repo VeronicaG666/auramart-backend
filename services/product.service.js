@@ -44,14 +44,12 @@ class ProductService {
 
 
   getProductById = async (id) => {
-    try {
-      const product = await getProductDb(id);
-      if (!product) throw new ErrorHandler(404, "Product not found");
-      return product;
-    } catch (error) {
-      throw new ErrorHandler(error.statusCode || 500, error.message || "Error fetching product");
-    }
+    console.log("✅ Running query for product_id:", id);
+    const result = await pool.query("SELECT * FROM products WHERE product_id = $1", [id]);
+    console.log("✅ DB Response:", result.rows);
+    return result.rows[0];
   };
+
 
 
   getProductBySlug = async (slug) => {
