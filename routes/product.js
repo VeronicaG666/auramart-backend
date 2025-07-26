@@ -23,11 +23,10 @@ router.route("/")
 // ✅ Categories
 router.get("/categories/list", getCategories);
 
-// ✅ Get Product by ID (For guest cart & direct lookup)
-// ✅ Add this ABOVE slug route
+// ✅ Get Product by ID (place BEFORE slug route!)
 router.get("/id/:id", getProduct);
 
-// ✅ Slug-based routes
+// ✅ Slug-based routes (fallback for SEO URLs)
 router.route("/:slug")
   .get(getProductBySlug)
   .put(verifyToken, verifyAdmin, updateProduct)
